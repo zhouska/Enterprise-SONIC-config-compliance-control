@@ -1,0 +1,3 @@
+forbidden_interfaces:
+        Eth1/56:
+                description: Forbidden interface

@@ -1,0 +1,19 @@
+- hosts: all
+  connection: network_cli
+  gather_facts: no
+  collections:
+     - dellemc.enterprise_sonic
+
+  tasks:
+  - name: Create backup folder if it doesn't exist
+    file:
+     path: ./backups
+     state: directory
+
+  - name: Save and backup configs
+    sonic_config:
+      save: yes
+      backup: yes
+      backup_options:
+        filename: "{{inventory_hostname}}.cfg"
+        dir_path: ./backups

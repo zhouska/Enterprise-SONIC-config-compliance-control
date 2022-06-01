@@ -1,0 +1,14 @@
+- hosts: all
+  connection: local
+  name: Generate ansible playbook
+  vars_files:
+    - group_vars/allowed_vlans.yaml
+    - group_vars/forbidden_vlans.yaml
+    - group_vars/forbidden_interfaces.yaml
+    - group_vars/allowed_interfaces.yaml
+
+  tasks:
+  - name: Generate files
+    template:
+     src: templates/sonic-vlans.j2
+     dest: compliance_check_and_config.yaml

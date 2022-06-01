@@ -1,0 +1,5 @@
+---
+- name: Perform compliance check and configure switch(es)
+  import_playbook: compliance_check_and_config.yaml
+- name: Save switch config
+  import_playbook: save_config.yaml

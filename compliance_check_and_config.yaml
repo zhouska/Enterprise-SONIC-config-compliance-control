@@ -1,0 +1,41 @@
+- hosts: all
+  gather_facts: False
+  connection: httpapi
+  collections:
+    - dellemc.enterprise_sonic
+  tasks:
+    - name: Change interface naming
+      sonic_system:
+        config:
+         interface_naming: standard
+        state: merged
+
+    - name: Create VLANs
+      sonic_vlans:
+        config:
+          - vlan_id: 23
+          - vlan_id: 25
+        state: merged
+
+    - name: Setup interfaces
+      sonic_interfaces:
+       config:
+        - name: Eth1/1 
+          description: Eth1/1
+       state: merged
+
+
+    - name: Add VLANs to L2 interfaces
+      sonic_l2_interfaces:
+       config:
+        - name: Eth1/1
+          trunk:
+            allowed_vlans:
+              - vlan: 23
+              - vlan: 25
+        - name: Eth1/2
+          trunk:
+            allowed_vlans:
+              - vlan: 23
+              - vlan: 25
+       state: merged

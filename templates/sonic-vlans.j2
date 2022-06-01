@@ -1,0 +1,59 @@
+- hosts: all
+  gather_facts: False
+  connection: httpapi
+  collections:
+    - dellemc.enterprise_sonic
+  tasks:
+    - name: Change interface naming
+      sonic_system:
+        config:
+         interface_naming: standard
+        state: merged
+
+    - name: Create VLANs
+      sonic_vlans:
+        config:
+{% for vlan in forbidden_vlans  %}
+{% if vlan in allowed_vlans %}
+{% do allowed_vlans.pop(vlan) %}
+{% endif %}
+{% endfor %}
+{% for vlan in allowed_vlans  %}
+          - vlan_id: {{ vlan }}
+{% endfor %}
+        state: merged
+
+    - name: Setup interfaces
+      sonic_interfaces:
+       config:
+{% for interface in forbidden_interfaces  %}
+{% if interface in allowed_interfaces %}
+{% do allowed_interfaces.pop(interface) %}
+{% endif %}
+{% endfor %}
+{% for interface, data in allowed_interfaces.items() %}
+{% if data.description  %}
+        - name: {{ interface }} 
+          description: {{ data.description }}
+{% endif %}
+{% endfor %}
+       state: merged
+
+
+    - name: Add VLANs to L2 interfaces
+      sonic_l2_interfaces:
+       config:
+{% for interface in forbidden_interfaces  %}
+{% if interface in allowed_interfaces %}
+{% do allowed_interfaces.pop(interface) %}
+{% endif %}
+{% endfor %}
+{% for interface in allowed_interfaces %}
+        - name: {{ interface }}
+          trunk:
+            allowed_vlans:
+{% for vlan in allowed_vlans  %}
+              - vlan: {{ vlan }}
+{% endfor %}
+{% endfor %}
+       state: merged

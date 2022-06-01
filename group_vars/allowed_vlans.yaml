@@ -1,0 +1,7 @@
+allowed_vlans:
+        20:
+                description: VLAN20
+        23:
+                description: VLAN23
+        25:     
+                description: VLAN25

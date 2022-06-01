@@ -1,0 +1,5 @@
+forbidden_vlans:
+        20:
+                description: VLAN20
+        21:
+                description: VLAN21
