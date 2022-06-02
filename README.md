@@ -12,6 +12,6 @@ Imagine you have some blacklisted/forbidden vlans/interfaces which users cannot 
 # How to use this project:
 - edit list of target hosts in ``inventory``
 - create ``ansible.cfg`` to suit your needs
-- edit list of forbidden and allowed vlans/interfaces to your liking. Don't forget it needs to be use python dictionary structure because of used function pop().
+- edit list of forbidden and allowed vlans/interfaces to your liking. Don't forget it needs to use python dictionary structure because of used function pop().
 - run the ansible playbook generate_files.yaml: ``ansible-playbook generate_files.yaml``. It will create/update ansible playbook ``compliance_check_and_config.yaml`` using the input files from previous step.
 - run the ansible playbook main.yaml: ``ansible-playbook main.yaml`` to configure the switches
